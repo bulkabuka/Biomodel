@@ -1,3 +1,4 @@
+<title>Главная</title>
 <link rel="stylesheet" href="/static/css/main.css"/>
 
 <div class="container back-container">
@@ -6,7 +7,7 @@
         <div class="container navbar navbar-right radius-md">
             <a>Популяция волков</a>
             <a>Игра в жизнь</a>
-            <a>Распространение лишая</a>
+            <a href="/the_spread_of_lichen">Распространение лишая</a>
         </div>
     </nav>
 
