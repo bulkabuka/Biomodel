@@ -21,4 +21,9 @@ def the_spread_of_lichen():
     return template('the_spread_of_lichen', title="Распространение лишая")
 
 
+@route('/Wolf_island')
+def the_spread_of_lichen():
+    return template('Wolf_island', title="Волчий остров")
+
+
 run(host='localhost', port=8080)

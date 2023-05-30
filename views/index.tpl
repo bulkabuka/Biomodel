@@ -5,9 +5,9 @@
     <nav class="navbar">
         <a class="container gradient-bg title" href="/">Biomodel</a>
         <div class="container navbar navbar-right radius-md">
-            <a>Популяция волков</a>
+            <a href="/Wolf_island"> Популяция волков</a>
             <a>Игра в жизнь</a>
-            <a href="/the_spread_of_lichen">Распространение лишая</a>
+            <a href="/the_spread_of_lichen"> Распространение лишая</a>
         </div>
     </nav>
 
