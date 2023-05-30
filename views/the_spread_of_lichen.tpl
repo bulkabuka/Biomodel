@@ -4,42 +4,52 @@
     <nav class="navbar">
             <a class="container gradient-bg title" href="/">Biomodel</a>
             <div class="container navbar navbar-right radius-md">
-                <a>Популяция волков</a>
-                <a>Игра в жизнь</a>
+                <a href="/wolf_island">Популяция волков</a>
+                <a href="/life">Игра в жизнь</a>
                 <a href="/the_spread_of_lichen">Распространение лишая</a>
             </div>
     </nav>
 <head>
     <style>
         .cell {
-            width: 100px;
-            height: 100px;
-            display: inline-block;
+            width: 60px;
+            height: 60px;
+            float: left;
+            border-radius: 0;
+            background: #ffffff;
         }
+
         .infected {
-            background-color: red;
+            background-color: #FF8743;
 
         }
         .immune {
-            background-color: orange;
+            background-color: #ADFF00;
         }
         .healthy {
-            background-color: green;
+            background-color: #fff;
         }
     </style>
 </head>
     <body>
-    <h1>Распространение лишая на кожу</h1>
-    <label for="size">Размер NxN:</label>
-    <input type="number" id="size" min="1" max="10">
-    <br>
-    <label for="intervals">Количество интервалов времени:</label>
-    <input type="number" id="intervals" min="1" max="10">
-    <br>
-    <button onclick="startSimulation()">Запустить моделирование</button>
-    <br><br>
-    <div id="grid"></div>
-
+    <div class="container" style="margin: 20px;">
+        <h1>Распространение лишая на кожу</h1>
+        <p class="label">
+Модель распространения лишая моделирует, как грибковая инфекция, такая как лишай, распространяется по поверхности кожи.
+            Это может быть представлено как двумерная сетка, где каждая клетка представляет кусок кожи.
+            Клетки могут быть заражены или здоровыми, и инфекция может распространяться с зарегистрированных клеток на их соседей.
+            Правила модели могут включать вероятности передачи инфекции, скорость ее распространения и естественный иммунный ответ организма.
+        </p>
+        <label for="size">Размер NxN:</label>
+        <input type="number" id="size" min="1" max="10">
+        <br>
+        <label for="intervals">Количество интервалов времени:</label>
+        <input type="number" id="intervals" min="1" max="10">
+        <br>
+        <button onclick="startSimulation()">Запустить моделирование</button>
+        <br><br>
+        <div id="grid"></div>
+    </div>
     <script>
 function startSimulation() {
     var size = parseInt(document.getElementById("size").value);
@@ -82,7 +92,6 @@ function startSimulation() {
                 var cell = document.createElement("div");
                 var cellState = cells[i][j].state;
                 cell.className = "cell " + cellState;
-                cell.style.border = "1px solid black"; // Добавить рамку
                 grid.appendChild(cell);
             }
             grid.appendChild(document.createElement("br"));
