@@ -289,3 +289,11 @@ button:hover {
 #start-btn {
     margin-top: 20px;
 }
+
+footer {
+    border-radius: 35px;
+    padding: 20px;
+    margin: 25px;
+    background-color: #3b3b3b;
+    color: var(--palette-accent);
+}

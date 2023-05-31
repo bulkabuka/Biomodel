@@ -146,6 +146,5 @@ function startSimulation() {
 
     </script>
 </body>
-
-
+<footer>@ Leftbrained, Inc.</footer>
 </div>

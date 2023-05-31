@@ -85,5 +85,6 @@
     });
 
     </script>
+    <footer>@ Leftbrained, Inc.</footer>
 </div>
 </html>
