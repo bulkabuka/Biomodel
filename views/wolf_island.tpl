@@ -43,8 +43,8 @@
             <div id="island"></div>
             <div style="margin-left: 20px;">
                 <p>Кролики: <input id="rabbit-input" type="number" min="0" value="5"></p>
-                <p>Волки: <input id="wolf-input" type="number" min="0" value="10"></p>
-                <p>Волчицы: <input id="female-wolf-input" type="number" min="0" value="7"></p>
+                <p style="color: gray">Волки: <input id="wolf-input" type="number" min="0" value="10"></p>
+                <p style="color: darksalmon">Волчицы: <input id="female-wolf-input" type="number" min="0" value="7"></p>
                 <button id="start-btn">Начать</button>
                 <div id="grid"></div>
             </div>

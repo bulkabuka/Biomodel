@@ -279,11 +279,11 @@ button:hover {
 }
 
 .wolf {
-    background-color: #ADFF00;
+    background-color: gray;
 }
 
 .female-wolf {
-    background-color: #FF8743;
+    background-color: darksalmon;
 }
 
 #start-btn {
