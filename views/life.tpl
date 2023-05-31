@@ -19,7 +19,7 @@
     </style>
 </head>
 <div class="container back-container">
-    <nav class="navbar">
+    <nav class="navbar" style="padding: 32px;">
         <a class="container gradient-bg title" href="/">Biomodel</a>
         <div class="container navbar navbar-right radius-md">
             <a href="/wolf_island">Популяция волков</a>
@@ -28,7 +28,7 @@
         </div>
     </nav>
 
-    <div class="container-main">
+    <div class="container-main" style="padding: 32px;">
         <div class="container" style="margin: 20px;">
         <h1 style="color: var(--palette-accent)">Игра в жизнь</h1>
         <p class="label">Игра "Жизнь" - это клеточный автомат, придуманный британским математиком Джоном Хортоном Конвеем в 1970 году.
@@ -39,11 +39,6 @@
             Главная суть - проверка состояния соседей какой-либо клетки. Например, если у мертвой клетки три живых соседа - она воскресает.
             Так же живая клетка остается живой если у нее есть 2-3 соседа (не больше), иначе она умирает.
         </p>
-        <p>Строки: <input id="rows" type="number" min="1" value="10"></p>
-        <p>Столбцы: <input id="cols" type="number" min="1" value="10"></p>
-        <button id="start">Начать игру</button>
-        <button id="next">Следующее поколение</button>
-        <div id="grid"></div>
         </div>
 
         <div class="container" style="margin: 20px;">
@@ -53,6 +48,17 @@
                 и появление различных структур, угасание и появление жизни. Для работы требуется только выбрать размер
                 поля для игры и нажатие кнопки "Следующее поколение" для нового шага работы.
             </p>
+        </div>
+    </div>
+
+    <div class="container-main" style="padding: 32px;">
+        <div class="container" style="margin: 20px; width: 100%;">
+            <h1 style="color: var(--palette-accent)">Игровое поле</h1>
+            <p>Строки: <input id="rows" type="number" min="1" value="10" max="25"></p>
+            <p>Столбцы: <input id="cols" type="number" min="1" value="10" max="25"></p>
+            <button id="start">Начать игру</button>
+            <button id="next">Следующее поколение</button>
+            <div id="grid"></div>
         </div>
     </div>
 

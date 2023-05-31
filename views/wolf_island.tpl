@@ -42,7 +42,7 @@
 <body>
 
 <div class="container back-container">
-    <nav class="navbar">
+    <nav class="navbar" style="padding: 32px;">
             <a class="container gradient-bg title" href="/">Biomodel</a>
             <div class="container navbar navbar-right radius-md">
                 <a href="/wolf_island">Популяция волков</a>
@@ -51,7 +51,7 @@
             </div>
     </nav>
 
-    <div class="container-main">
+    <div class="container-main" style="padding: 32px;">
         <div class="container" style="margin: 20px;">
             <h1 style="color: var(--palette-accent)">Симуляция волчьего острова</h1>
             <p class="label">
