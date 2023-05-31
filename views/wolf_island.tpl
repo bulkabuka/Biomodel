@@ -1,34 +1,6 @@
 <title>Волчий остров</title>
 <link rel="stylesheet" href="/static/css/main.css"/>
 <head>
-    <style>
-        #island {
-            width: 400px;
-            height: 400px;
-            background-color: lightgreen;
-            display: flex;
-            flex-wrap: wrap;
-            border-radius: 20px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-
-        .rabbit {
-            background-color: white;
-        }
-
-        .wolf {
-            background-color: #ADFF00;
-        }
-
-        .female-wolf {
-            background-color: #FF8743;
-        }
-
-        #start-btn {
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
 <div class="container back-container">

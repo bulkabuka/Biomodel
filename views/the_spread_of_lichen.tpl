@@ -10,26 +10,6 @@
             </div>
     </nav>
 <head>
-    <style>
-        .cell {
-            width: 60px;
-            height: 60px;
-            float: left;
-            border-radius: 0;
-            background: #ffffff;
-        }
-
-        .infected {
-            background-color: #FF8743;
-
-        }
-        .immune {
-            background-color: #ADFF00;
-        }
-        .healthy {
-            background-color: #fff;
-        }
-    </style>
 </head>
     <body>
     <div class="container-main">
