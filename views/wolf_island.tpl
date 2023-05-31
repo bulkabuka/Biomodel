@@ -9,18 +9,27 @@
             height: 100vh;
         }
 
-        #island {
-            width: 800px;
-            height: 800px;
-            background-color: lightgreen;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            border-radius: 20px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
+#island {
+    width: 1600px;
+    height: 800px;
+    background-color: lightgreen;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    border-radius: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+#island > div {
+    width: calc(100% / 20);
+    height: calc(100% / 20);
+    border: 1px solid white;
+    box-sizing: border-box;
+    background-color: darkgreen;
+}
+
+
 
         .rabbit {
             background-color: white;
@@ -66,20 +75,29 @@
     за которым она охотится. Если волчица и кролик оказываются в
     одном квадрате, волчица съедает кролика и получает одно очко.
             </p>
-            <div id="island"></div>
-            <p>Кролики: <input id="rabbit-input" type="number" min="0" value="5"></p>
-            <p>Волки: <input id="wolf-input" type="number" min="0" value="10"></p>
-            <p>Волчицы: <input id="female-wolf-input" type="number" min="0" value="7"></p>
-            <button id="start-btn">Начать</button>
         </div>
          <div class="container" style="margin: 20px;">
             <h1 style="color: var(--palette-secondary)">Пояснение к задаче</h1>
-            <p class="label">Игра по сути является симуляцией простейших форм жизни/клеток.
-                С помощью некоторых проверок и системы живой/не живой клетки организуется самостоятельное развитие
-                и появление различных структур, угасание и появление жизни. Для работы требуется только выбрать размер
-                поля для игры и нажатие кнопки "Следующее поколение" для нового шага работы.
+            <p class="label">В данной задаче моделируется ситуация на волчьем острове размером 20x20, где присутствуют дикие кролики, волки и волчицы. В начале моделирования на острове присутствуют несколько представителей каждого вида. Каждый вид имеет свое поведение и взаимодействие друг с другом.
+Кролики - глупые существа, которые в каждый момент времени с одинаковой вероятностью 1/9 передвигаются в один из восьми соседних квадратов, за исключением участков, ограниченных береговой линией. Они также могут просто сидеть неподвижно. Каждый кролик с вероятностью 0,2 превращается в двух кроликов.
+Волчицы - передвигаются случайным образом до тех пор, пока в одном из восьми соседних квадратов не окажется кролик, за которым они охотятся. Когда волчица и кролик оказываются в одном квадрате, волчица съедает кролика и получает одно очко.
             </p>
         </div>
     </div>
+    <div class="container-main" style="padding: 32px;">
+    <div class="container" style="margin: 20px; width: 100%;">
+        <div style="display: flex;">
+            <div id="island"></div>
+            <div style="margin-left: 20px;">
+                <p>Кролики: <input id="rabbit-input" type="number" min="0" value="5"></p>
+                <p>Волки: <input id="wolf-input" type="number" min="0" value="10"></p>
+                <p>Волчицы: <input id="female-wolf-input" type="number" min="0" value="7"></p>
+                <button id="start-btn">Начать</button>
+                <div id="grid"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </div>
 </body>
