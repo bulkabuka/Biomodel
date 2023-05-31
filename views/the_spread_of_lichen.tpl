@@ -1,7 +1,7 @@
 <title>Распространение лишая</title>
 <link rel="stylesheet" href="/static/css/main.css"/>
 <div class="container back-container">
-    <nav class="navbar">
+    <nav class="navbar" style="padding: 32px;">
             <a class="container gradient-bg title" href="/">Biomodel</a>
             <div class="container navbar navbar-right radius-md">
                 <a href="/wolf_island">Популяция волков</a>
