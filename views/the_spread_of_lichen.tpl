@@ -36,6 +36,9 @@
     </div>
     <div class="container" style="margin: 20px;">
         <h1 style="color: var(--palette-accent)"> решение модели</h1>
+        <p>Белый - Здоровая клетка</p>
+        <p style="color:#FF8743">Оранжевый - Инфецированная клетка </p>
+        <p style="color:#ADFF00"> Зелёный - Клетка с иммунитетом </p>
         <label for="size">Размер NxN:</label>
         <input type="number" id="size" min="1" max="10">
         <br>

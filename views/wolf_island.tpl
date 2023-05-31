@@ -41,16 +41,15 @@
     <div class="container" style="margin: 20px; width: 100%;">
         <div style="display: flex;">
             <div id="island"></div>
-            <div style="margin-left: 20px;">
-                <p>Кролики: <input id="rabbit-input" type="number" min="0" value="5"></p>
-                <p>Волки: <input id="wolf-input" type="number" min="0" value="10"></p>
-                <p>Волчицы: <input id="female-wolf-input" type="number" min="0" value="7"></p>
-                <button id="start-btn">Начать</button>
-                <div id="grid"></div>
-            </div>
+            <label>Белый - Заяц</label>
+            <label style="color:#FF8743">Оранжевый - Волчица </label>
+            <label style="color:#ADFF00"> Зелёный - Волк </label>
+
+            <p>Кролики: <input id="rabbit-input" type="number" min="0" value="5"></p>
+            <p>Волки: <input id="wolf-input" type="number" min="0" value="10"></p>
+            <p>Волчицы: <input id="female-wolf-input" type="number" min="0" value="7"></p>
+            <button id="start-btn">Начать</button>
         </div>
     </div>
-</div>
-
 </div>
 </body>
