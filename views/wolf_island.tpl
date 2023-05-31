@@ -1,12 +1,21 @@
 <title>Волчий остров</title>
 <link rel="stylesheet" href="/static/css/main.css"/>
 <head>
-    <style>
+     <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
         #island {
-            width: 400px;
-            height: 400px;
+            width: 800px;
+            height: 800px;
             background-color: lightgreen;
             display: flex;
+            justify-content: center;
+            align-items: center;
             flex-wrap: wrap;
             border-radius: 20px;
             margin-top: 20px;
@@ -31,6 +40,7 @@
     </style>
 </head>
 <body>
+
 <div class="container back-container">
     <nav class="navbar">
             <a class="container gradient-bg title" href="/">Biomodel</a>
@@ -57,11 +67,18 @@
     одном квадрате, волчица съедает кролика и получает одно очко.
             </p>
             <div id="island"></div>
-
             <p>Кролики: <input id="rabbit-input" type="number" min="0" value="5"></p>
             <p>Волки: <input id="wolf-input" type="number" min="0" value="10"></p>
             <p>Волчицы: <input id="female-wolf-input" type="number" min="0" value="7"></p>
             <button id="start-btn">Начать</button>
+        </div>
+         <div class="container" style="margin: 20px;">
+            <h1 style="color: var(--palette-secondary)">Пояснение к задаче</h1>
+            <p class="label">Игра по сути является симуляцией простейших форм жизни/клеток.
+                С помощью некоторых проверок и системы живой/не живой клетки организуется самостоятельное развитие
+                и появление различных структур, угасание и появление жизни. Для работы требуется только выбрать размер
+                поля для игры и нажатие кнопки "Следующее поколение" для нового шага работы.
+            </p>
         </div>
     </div>
 </div>

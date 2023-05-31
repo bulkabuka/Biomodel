@@ -50,6 +50,7 @@
         <br><br>
         <div id="grid"></div>
     </div>
+
     <script>
 function startSimulation() {
     var size = parseInt(document.getElementById("size").value);
