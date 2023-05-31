@@ -46,6 +46,8 @@
             <button id="start">Начать игру</button>
             <button id="next">Следующее поколение</button>
             <div id="grid"></div>
+            <label>Белый - Не живая клетка</label>
+            <label style="color:#FF8743">Оранжевый - живая клетка </label>
         </div>
     </div>
 
