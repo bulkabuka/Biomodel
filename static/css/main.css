@@ -54,7 +54,7 @@ a:hover {
 
 .navbar {
     align-items: stretch;
-    gap: 10px;
+    gap: 20px;
     display: flex;
 }
 
@@ -63,9 +63,9 @@ a:hover {
     background-color: white;
     color: black;
     display: flex;
-    align-content: space-between;
+    align-content: center;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
 }
 
 .title {
@@ -104,6 +104,7 @@ a:hover {
 .star-container {
     background-image: url("/static/images/star.svg");
     padding: 32px;
+    margin-top: 24px;
     width: 25vw;
     height: 25vh;
     color: white;
