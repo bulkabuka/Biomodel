@@ -4,19 +4,6 @@
     <title>Игра в жизнь</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/static/css/main.css"/>
-    <style>
-        .cell {
-            width: 60px;
-            height: 60px;
-            float: left;
-            border-radius: 0;
-            background: #ffffff;
-        }
-
-        .alive {
-            background: #FF8743;
-        }
-    </style>
 </head>
 <div class="container back-container">
     <nav class="navbar" style="padding: 32px;">

@@ -1,55 +1,8 @@
 <title>Волчий остров</title>
 <link rel="stylesheet" href="/static/css/main.css"/>
 <head>
-     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-#island {
-    width: 1600px;
-    height: 800px;
-    background-color: lightgreen;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    border-radius: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-#island > div {
-    width: calc(100% / 20);
-    height: calc(100% / 20);
-    border: 1px solid white;
-    box-sizing: border-box;
-    background-color: darkgreen;
-}
-
-
-
-        .rabbit {
-            background-color: white;
-        }
-
-        .wolf {
-            background-color: #ADFF00;
-        }
-
-        .female-wolf {
-            background-color: #FF8743;
-        }
-
-        #start-btn {
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
-
 <div class="container back-container">
     <nav class="navbar" style="padding: 32px;">
             <a class="container gradient-bg title" href="/">Biomodel</a>
