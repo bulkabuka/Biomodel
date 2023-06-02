@@ -1,7 +1,7 @@
 from bottle import route, run, template, request, response, static_file, post, get
 import numpy as np
 import json
-import life
+from life import *
 
 game_state = None
 
@@ -31,6 +31,7 @@ def the_spread_of_lichen():
     return template('wolf_island', title="Волчий остров")
 
 
+# инициализация поля случано выбранными живыми/неживыми клетками
 @route('/start', method='POST')
 def start():
     global game_state
@@ -40,26 +41,13 @@ def start():
     return {'status': 'Game started', 'grid': game_state.tolist()}
 
 
+# интерпретация данных в JSON для анализа на сервере
 @route('/next')
 def next_gen():
     global game_state
     game_state = next_generation(game_state)
     response.content_type = 'application/json'
     return json.dumps({'grid': game_state.tolist()})
-
-
-def next_generation(state):
-    new_state = state.copy()
-    rows, cols = state.shape
-    for i in range(rows):
-        for j in range(cols):
-            total = np.sum(state[max(0,i-1):min(rows,i+2), max(0,j-1):min(cols,j+2)]) - state[i,j]
-            if state[i,j]:
-                if total < 2 or total > 3:
-                    new_state[i,j] = 0
-            elif total == 3:
-                new_state[i,j] = 1
-    return new_state
 
 
 run(host='localhost', port=8080)
