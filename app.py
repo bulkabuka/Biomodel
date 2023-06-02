@@ -1,9 +1,11 @@
-from bottle import route, run, template, request, response, static_file, post, get
+import os.path
+
+from bottle import route, run, template, request, response, static_file, post, get, abort
 import numpy as np
 import json
-import life
 from lichen import simulate_lishai
 from life import *
+from wolf import *
 
 game_state = None
 
@@ -31,6 +33,24 @@ def the_spread_of_lichen():
 @route('/wolf_island')
 def the_spread_of_lichen():
     return template('wolf_island', title="Волчий остров")
+
+
+@route('/websocket')
+def handle_websocket():
+    wsock = request.environ.get('wsgi.websocket')
+    if not wsock:
+        abort(400, 'Expected WebSocket request.')
+    while True:
+        try:
+            message = wsock.receive()
+            if message == "start":
+                sim = Simulation()  # Initialize your simulation here
+                sim.setup()
+                for i in range(sim.iterations):
+                    sim.run()
+                    wsock.send(json.dumps(sim.matrix.tolist()))  # Send the matrix to the front-end
+        except WebSocketError:
+            break
 
 
 # инициализация поля случано выбранными живыми/неживыми клетками
@@ -68,6 +88,18 @@ def next_gen():
     game_state = next_generation(game_state)
     response.content_type = 'application/json'
     return json.dumps({'grid': game_state.tolist()})
+
+
+# сохранение следующей итерации в файл JSON
+@post('/save-life')
+def save_life():
+    global game_state
+    game_state = next_generation(game_state)
+    response.content_type = 'application/json'
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+    with open('output.json', 'w') as file:
+        json.dump({'grid': game_state.tolist()}, file)
 
 
 run(host='localhost', port=8080)

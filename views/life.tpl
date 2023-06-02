@@ -45,6 +45,7 @@
             <p>Столбцы: <input id="cols" type="number" min="4" value="10" max="25"></p>
             <button id="start">Начать игру</button>
             <button id="next">Следующее поколение</button>
+            <button id="save">Сохранить результат</button>
             <div id="grid"></div>
             <label>Белый - Не живая клетка</label>
             <label style="color:#FF8743">Оранжевый - живая клетка </label>
@@ -87,6 +88,10 @@
             }
         });
     });
+
+    $('#save').click(function () {
+        $.post("/save-life")
+    })
 
     </script>
     <footer>@ Leftbrained, Inc.</footer>
