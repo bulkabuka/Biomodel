@@ -51,6 +51,6 @@
         </div>
     </div>
 </div>
-<footer>2023 @ Leftbrained, Inc.</footer>
+<footer>@ Leftbrained, Inc.</footer>
 </div>
 </body>

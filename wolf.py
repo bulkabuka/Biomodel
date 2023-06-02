@@ -1,107 +1,206 @@
-import numpy as np
 import random
 
 
-class Animal:
-    def __init__(self, point=1, simulation=None):
-        self.point = point
-        self.simulation = simulation
+class Island:
+    def __init__(self, size):
+        self.size = size
+        self.grid = [[None for _ in range(size)] for _ in range(size)]
+        self.population = {'rabbits': [], 'wolves': [], 'she-wolves': []}
+        self.score = 0
 
-    def move(self, matrix, current_position):
-        raise NotImplementedError()
+    def add_rabbit(self, x, y):
+        rabbit = Rabbit(x, y)
+        self.population['rabbits'].append(rabbit)
+        self.grid[y][x] = rabbit
+
+    def add_wolf(self, x, y):
+        wolf = Wolf(x, y)
+        self.population['wolves'].append(wolf)
+        self.grid[y][x] = wolf
+
+    def add_she_wolf(self, x, y):
+        she_wolf = SheWolf(x, y)
+        self.population['she-wolves'].append(she_wolf)
+        self.grid[y][x] = she_wolf
+
+    def move(self):
+        for wolf in self.population['wolves']:
+            wolf.move(self)
+        for she_wolf in self.population['she-wolves']:
+            she_wolf.move(self)
+        for rabbit in self.population['rabbits']:
+            rabbit.move(self)
+
+    def remove_dead_animals(self):
+        self.population['wolves'] = [wolf for wolf in self.population['wolves'] if wolf.score > 0]
+        self.population['she-wolves'] = [she_wolf for she_wolf in self.population['she-wolves'] if she_wolf.score > 0]
+
+    def print_grid(self):
+        for row in self.grid:
+            print(' '.join([str(cell) if cell else '-' for cell in row]))
+
+
+class Animal:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def move(self, island):
+        possible_moves = [(self.x + dx, self.y + dy) for dx in [-1, 0, 1] for dy in [-1, 0, 1] if (dx != 0 or dy != 0)]
+        valid_moves = [(x, y) for (x, y) in possible_moves if 0 <= x < island.size and 0 <= y < island.size]
+        new_x, new_y = random.choice(valid_moves)
+        if not island.grid[new_y][new_x]:
+            island.grid[self.y][self.x] = None
+            self.x = new_x
+            self.y = new_y
+            island.grid[self.y][self.x] = self
+
+    def __repr__(self):
+        return self.symbol
 
 
 class Rabbit(Animal):
-    def move(self, matrix, current_position):
-        neighbors = Simulation.get_neighboring_cells(simulation, current_position)
-        direction = random.choice(neighbors + [current_position] * 2)  # 1/9 chance to stay in place
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        self.symbol = 'R'
 
-        if matrix[direction].get('type') == 0:  # Only move to free spaces
-            matrix[direction], matrix[current_position] = matrix[current_position], matrix[direction]
+    def move(self, island):
+        super().move(island)
+        if random.random() < 1 / 9:
+            new_x, new_y = random.choice(
+                [(self.x + dx, self.y + dy) for dx in [-1, 0, 1] for dy in [-1, 0, 1] if (dx != 0 or dy != 0)])
+            if 0 <= new_x < island.size and 0 <= new_y < island.size and not island.grid[new_y][new_x]:
+                island.add_rabbit(new_x, new_y)
 
-        if random.random() < 0.2:  # 1/5 chance to multiply
-            free_neighbors = [position for position in neighbors if matrix[position].get('type') == 0]
-            if free_neighbors:
-                new_position = random.choice(free_neighbors)
-                matrix[new_position] = {'type': 1, 'object': Rabbit()}
+        if random.random() < 0.2:
+            new_x, new_y = random.choice(
+                [(self.x + dx, self.y + dy) for dx in [-1, 0, 1] for dy in [-1, 0, 1] if (dx != 0 or dy != 0)])
+            if 0 <= new_x < island.size and 0 <= new_y < island.size and not island.grid[new_y][new_x]:
+                island.add_rabbit(new_x, new_y)
+
+
+class Wolf(Animal):
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        self.symbol = 'W'
+        self.score = 0
+
+    def move(self, island):
+        super().move(island)
+        if not island.population['rabbits']:
+            return
+
+        nearby_rabbits = []
+        for dx in [-1, 0, 1]:
+            for dy in [-1, 0, 1]:
+                new_x, new_y = self.x + dx, self.y + dy
+                if 0 <= new_x < island.size and 0 <= new_y < island.size and isinstance(island.grid[new_y][new_x], Rabbit):
+                    nearby_rabbits.append((new_x, new_y))
+
+        if nearby_rabbits:
+            target_x, target_y = random.choice(nearby_rabbits)
+            self.score += 1
+            island.score += 1
+            rabbit = island.grid[target_y][target_x]
+            island.population['rabbits'].remove(rabbit)
+            island.grid[target_y][target_x] = None
+            return
+
+        self.score -= 0.1
+
+        she_wolf = None
+        if island.population['she-wolves']:
+            she_wolf = island.population['she-wolves'][0]
+            for sw in island.population['she-wolves']:
+                if abs(sw.x - self.x) + abs(sw.y - self.y) < abs(she_wolf.x - self.x) + abs(she_wolf.y - self.y):
+                    she_wolf = sw
+
+        if she_wolf and abs(she_wolf.x - self.x) <= 1 and abs(she_wolf.y - self.y) <= 1:
+            if island.grid[she_wolf.y][she_wolf.x] == she_wolf:
+                self.score += 1
+                island.score += 1
+                offspring_gender = random.choice(['M', 'F'])
+                offspring_x, offspring_y = random.choice(
+                    [(self.x + dx, self.y + dy) for dx in [-1, 0, 1] for dy in [-1, 0, 1] if (dx != 0 or dy != 0)])
+                if 0 <= offspring_x < island.size and 0 <= offspring_y < island.size and not island.grid[offspring_y][
+                    offspring_x]:
+                    if offspring_gender == 'M':
+                        island.add_wolf(offspring_x, offspring_y)
+                    else:
+                        island.add_she_wolf(offspring_x, offspring_y)
 
 
 class SheWolf(Animal):
-    def move(self, matrix, current_position):
-        neighbors = Simulation.get_neighboring_cells(simulation, current_position)
-        rabbit_neighbors = [position for position in neighbors if matrix[position].get('type') == 1]
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        self.symbol = 'S'
+        self.score = 0
 
-        if rabbit_neighbors:  # If there are rabbits, eat one
-            eat_position = random.choice(rabbit_neighbors)
-            matrix[eat_position], matrix[current_position] = matrix[current_position], matrix[eat_position]
-            self.point += 1
-        else:  # If no rabbits, move randomly
-            free_neighbors = [position for position in neighbors if matrix[position].get('type') == 0]
-            if free_neighbors:
-                new_position = random.choice(free_neighbors)
-                matrix[new_position], matrix[current_position] = matrix[current_position], matrix[new_position]
-                self.point -= 0.1
+    def move(self, island):
+        super().move(island)
+        if not island.population['rabbits']:
+            return
 
-        if self.point <= 0:
-            matrix[current_position] = {'type': 0, 'object': None}  # Dead
+        nearby_rabbits = []
+        for dx in [-1, 0, 1]:
+            for dy in [-1, 0, 1]:
+                new_x, new_y = self.x + dx, self.y + dy
+                if 0 <= new_x < island.size and 0 <= new_y < island.size and isinstance(island.grid[new_y][new_x], Rabbit):
+                    nearby_rabbits.append((new_x, new_y))
 
+        if nearby_rabbits:
+            target_x, target_y = random.choice(nearby_rabbits)
+            self.score += 1
+            island.score += 1
+            rabbit = island.grid[target_y][target_x]
+            island.population['rabbits'].remove(rabbit)
+            island.grid[target_y][target_x] = None
+            return
 
-class HeWolf(Animal):
-    def move(self, matrix, current_position):
-        neighbors = Simulation.get_neighboring_cells(simulation, current_position)
-        rabbit_neighbors = [position for position in neighbors if matrix[position].get('type') == 1]
-        she_wolf_neighbors = [position for position in neighbors if matrix[position].get('type') == 3]
+        self.score -= 0.1
 
-        if rabbit_neighbors:  # If there are rabbits, eat one
-            eat_position = random.choice(rabbit_neighbors)
-            matrix[eat_position], matrix[current_position] = matrix[current_position], matrix[eat_position]
-            self.point += 1
-        elif she_wolf_neighbors:  # If no rabbits but she-wolves, procreate
-            procreate_position = random.choice(she_wolf_neighbors)
-            free_neighbors = [position for position in neighbors if matrix[position].get('type') == 0]
-            if free_neighbors:
-                new_position = random.choice(free_neighbors)
-                new_animal_type = random.choice([2, 3])  # Randomly choose he-wolf or she-wolf
-                matrix[new_position] = {'type': new_animal_type,
-                                        'object': HeWolf() if new_animal_type == 2 else SheWolf()}
-        else:  # If no rabbits or she-wolves, move randomly
-            free_neighbors = [position for position in neighbors if matrix[position].get('type') == 0]
-            if free_neighbors:
-                new_position = random.choice(free_neighbors)
-                matrix[new_position], matrix[current_position] = matrix[current_position], matrix[new_position]
-                self.point -= 0.1
+        wolf = None
+        if island.population['wolves']:
+            wolf = island.population['wolves'][0]
+            for w in island.population['wolves']:
+                if abs(w.x - self.x) + abs(w.y - self.y) < abs(wolf.x - self.x) + abs(wolf.y - self.y):
+                    wolf = w
 
-        if self.point <= 0:
-            matrix[current_position] = {'type': 0, 'object': None}  # Dead
-
-
-class Simulation:
-    def __init__(self, size=20, iterations=10):
-        self.size = size
-        self.iterations = iterations
-        self.matrix = np.full((self.size, self.size), {'type': 0, 'object': None}, dtype=object)
-
-    def get_neighboring_cells(self, position):
-        x, y = position
-        neighbors = [(nx, ny) for nx in range(max(0, x-1), min(self.size, x+2)) for ny in range(max(0, y-1), min(self.size, y+2)) if nx != x or ny != y]
-        return neighbors
-
-    def setup(self):
-        for _ in range(100):  # Randomly place 100 of each type of animal
-            for animal_type, animal_class in [(1, Rabbit), (2, HeWolf), (3, SheWolf)]:
-                while True:
-                    position = (random.randrange(self.size), random.randrange(self.size))
-                    if self.matrix[position]['type'] == 0:
-                        self.matrix[position] = {'type': animal_type, 'object': animal_class(1, self)}
-                        break
-
-    def run(self):
-        self.setup()
-        for _ in range(self.iterations):
-            for (x, y), cell in np.ndenumerate(self.matrix):
-                if cell['type'] != 0:
-                    cell['object'].move(self.matrix, (x, y))
+        if wolf and abs(wolf.x - self.x) <= 1 and abs(wolf.y - self.y) <= 1:
+            if island.grid[wolf.y][wolf.x] == wolf:
+                self.score += 1
+                island.score += 1
+                offspring_gender = random.choice(['M', 'F'])
+                offspring_x, offspring_y = random.choice(
+                    [(self.x + dx, self.y + dy) for dx in [-1, 0, 1] for dy in [-1, 0, 1] if (dx != 0 or dy != 0)])
+                if 0 <= offspring_x < island.size and 0 <= offspring_y < island.size and not island.grid[offspring_y][
+                    offspring_x]:
+                    if offspring_gender == 'M':
+                        island.add_wolf(offspring_x, offspring_y)
+                    else:
+                        island.add_she_wolf(offspring_x, offspring_y)
 
 
-simulation = Simulation()
-simulation.run()
+def simulate_game():
+    island = Island(20)
+    for _ in range(10):
+        x, y = random.randint(0, 19), random.randint(0, 19)
+        island.add_rabbit(x, y)
+    for _ in range(5):
+        x, y = random.randint(0, 19), random.randint(0, 19)
+        island.add_wolf(x, y)
+    for _ in range(5):
+        x, y = random.randint(0, 19), random.randint(0, 19)
+        island.add_she_wolf(x, y)
+
+    island.print_grid()
+    print()
+
+    for _ in range(10):
+        island.move()
+        island.remove_dead_animals()
+        island.print_grid()
+        print()
+
+
+simulate_game()
