@@ -64,6 +64,23 @@ def simulate():
     return result
 
 
+@route('/start_simulation', method='POST')
+def start_simulation():
+    sim = Simulation()
+    sim.setup()
+    sim.run()
+    response.content_type = 'application/json'
+    return sim.matrix.tolist()
+
+
+@route('/update_simulation', method='POST')
+def update_simulation():
+    simulation.run()
+    response.content_type = 'application/json'
+    return simulation.matrix.tolist()
+
+
+
 # интерпретация данных в JSON для анализа на сервере
 @route('/next')
 def next_gen():
