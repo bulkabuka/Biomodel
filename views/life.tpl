@@ -41,8 +41,8 @@
     <div class="container-main" style="padding: 32px;">
         <div class="container" style="margin: 20px; width: 100%;">
             <h1 style="color: var(--palette-accent)">Игровое поле</h1>
-            <p>Строки: <input id="rows" type="number" min="1" value="10" max="25"></p>
-            <p>Столбцы: <input id="cols" type="number" min="1" value="10" max="25"></p>
+            <p>Строки: <input id="rows" type="number" min="4" value="10" max="25"></p>
+            <p>Столбцы: <input id="cols" type="number" min="4" value="10" max="25"></p>
             <button id="start">Начать игру</button>
             <button id="next">Следующее поколение</button>
             <div id="grid"></div>
@@ -52,6 +52,8 @@
     </div>
 
     <script>
+        // добавление нужного количества клеток
+        // и инициализация поля (берем данные из метода start в модуле на Python)
     $("#start").click(function() {
         $.post("/start", { rows: $("#rows").val(), cols: $("#cols").val() }, function(data) {
             $("#grid").empty();
@@ -70,6 +72,8 @@
         });
     });
 
+    // обработка нажатия кнопки следующего поколения,
+    // изменяет классы клеток, что позволяет видеть динамику
     $("#next").click(function() {
         $.get("/next", function(data) {
             for(var i=0; i<data.grid.length; i++) {
