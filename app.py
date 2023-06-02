@@ -1,3 +1,4 @@
+from datetime import *
 import os.path
 
 from bottle import route, run, template, request, response, static_file, post, get, abort
@@ -33,24 +34,6 @@ def the_spread_of_lichen():
 @route('/wolf_island')
 def the_spread_of_lichen():
     return template('wolf_island', title="Волчий остров")
-
-
-@route('/websocket')
-def handle_websocket():
-    wsock = request.environ.get('wsgi.websocket')
-    if not wsock:
-        abort(400, 'Expected WebSocket request.')
-    while True:
-        try:
-            message = wsock.receive()
-            if message == "start":
-                sim = Simulation()  # Initialize your simulation here
-                sim.setup()
-                for i in range(sim.iterations):
-                    sim.run()
-                    wsock.send(json.dumps(sim.matrix.tolist()))  # Send the matrix to the front-end
-        except WebSocketError:
-            break
 
 
 # инициализация поля случано выбранными живыми/неживыми клетками
@@ -98,8 +81,9 @@ def save_life():
     response.content_type = 'application/json'
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-    with open('output.json', 'w') as file:
+    with open('output.txt', 'a') as file:
         json.dump({'grid': game_state.tolist()}, file)
+        file.write(" " + str(datetime.now()))
 
 
 run(host='localhost', port=8080)
