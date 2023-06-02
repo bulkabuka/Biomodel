@@ -43,6 +43,24 @@ def start():
     return {'status': 'Game started', 'grid': game_state.tolist()}
 
 
+@route("/simulate", method="post")
+def simulate():
+    data = request.forms
+    print(data)
+    if data is None or 'rows' not in data or 'cols' not in data or 'intervals' not in data:
+        response.content_type = 'application/json'
+        return json.dumps({'error': 'Invalid request data'})
+
+    rows = int(data['rows'])
+    cols = int(data['cols'])
+    intervals = int(data['intervals'])
+
+    result = simulate_lishai(rows, cols, intervals)
+
+    response.content_type = 'application/json'
+    return result
+
+
 # интерпретация данных в JSON для анализа на сервере
 @route('/next')
 def next_gen():
