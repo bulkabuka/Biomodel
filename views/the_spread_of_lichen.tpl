@@ -35,7 +35,7 @@
         </div>
     </div>
     <div class="container" style="margin: 20px;">
-        <h1 style="color: var(--palette-accent)"> решение модели</h1>
+        <h1 style="color: var(--palette-accent)"> Решение модели</h1>
         <p>Белый - Здоровая клетка</p>
         <p style="color:#FF8743">Оранжевый - Инфецированная клетка </p>
         <p style="color:#ADFF00"> Зелёный - Клетка с иммунитетом </p>
@@ -45,106 +45,88 @@
         <label for="intervals">Количество интервалов времени:</label>
         <input type="number" id="intervals" min="1" max="10">
         <br>
-        <button onclick="startSimulation()">Запустить моделирование</button>
+        <button onclick="startSimulation()">Запустить</button>
         <br><br>
         <div id="grid"></div>
     </div>
 
-    <script>
-function startSimulation() {
-    var size = parseInt(document.getElementById("size").value);
-    var intervals = parseInt(document.getElementById("intervals").value);
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function startSimulation() {
+        const size = parseInt($("#size").val());
+        const intervals = parseInt($("#intervals").val());
 
-    if (intervals > 100) {
-        intervals = 100; // Ограничение максимального количества интервалов до 100
-    }
-
-    var grid = document.getElementById("grid");
-    grid.innerHTML = ""; // Очистить сетку перед новой симуляцией
-
-    // Создать начальное состояние сетки
-    var initialCell = Math.floor(size / 2);
-    var cells = [];
-    for (var i = 0; i < size; i++) {
-        cells[i] = [];
-        for (var j = 0; j < size; j++) {
-            if (i === initialCell && j === initialCell) {
-                cells[i][j] = { state: "infected", immunity: 4 };
-            } else {
-                cells[i][j] = { state: "healthy", immunity: 0 };
+        $.post("/simulate", { rows: size, cols: size, intervals: intervals }, function(data) {
+            console.log(data);
+            if (!data || !data.grid || data.grid.length === 0) {
+                console.error("Invalid data format");
+                return;
             }
-        }
-    }
 
-    var intervalId;
+            const gridContainer = $("#grid");
 
-    function updateGrid() {
-        if (intervals <= 0) {
-            clearInterval(intervalId); // Остановить интервал после выполнения всех интервалов
-            return;
-        }
+            // Функция для отображения текущей матрицы
+           function displayGrid(grid) {
+    gridContainer.empty();  // Очистка контейнера перед отображением новой матрицы
 
-        grid.innerHTML = ""; // Очистить сетку перед обновлением
+    for (let i = 0; i < size; i++) {
+        const row = $("<div></div>");  // Создание нового элемента div для каждой строки
+        row.addClass("row");
 
-        // Отобразить текущее состояние сетки
-        for (var i = 0; i < size; i++) {
-            for (var j = 0; j < size; j++) {
-                var cell = document.createElement("div");
-                var cellState = cells[i][j].state;
-                cell.className = "cell " + cellState;
-                grid.appendChild(cell);
+        for (let j = 0; j < size; j++) {
+            const cell = $("<div></div>");
+            cell.addClass("cell");
+
+            if (grid[i][j] === "healthy") {
+                cell.addClass("healthy");
+            } else if (grid[i][j] === "infected") {
+                cell.addClass("infected");
+            } else if (grid[i][j] === "immune") {
+                cell.addClass("immune");
             }
-            grid.appendChild(document.createElement("br"));
-        }
-        grid.appendChild(document.createElement("br"));
 
-        // Обновить состояние сетки
-        var newCells = JSON.parse(JSON.stringify(cells)); // Создать копию текущего состояния
-        for (var i = 0; i < size; i++) {
-            for (var j = 0; j < size; j++) {
-                var currentCell = cells[i][j];
-                if (currentCell.state === "infected") {
-                    if (currentCell.immunity === 0) {
-                        newCells[i][j] = { state: "immune", immunity: 3 };
-                    } else {
-                        newCells[i][j] = { state: "infected", immunity: currentCell.immunity - 1 };
-                    }
-                } else if (currentCell.state === "immune") {
-                    if (currentCell.immunity === 0) {
-                        newCells[i][j] = { state: "healthy", immunity: 0 };
-                    } else {
-                        newCells[i][j] = { state: "immune", immunity: currentCell.immunity - 1 };
-                    }
-                } else if (currentCell.state === "healthy") {
-                    // Проверить соседние клетки
-                    if (i > 0 && cells[i - 1][j].state === "infected") {
-                        newCells[i][j] = Math.random() < 0.5 ? { state: "infected", immunity: 4 } : { state: "healthy", immunity: 0 };
-                    } else if (i < size - 1 && cells[i + 1][j].state === "infected") {
-                        newCells[i][j] = Math.random() < 0.5 ? { state: "infected", immunity: 4 } : { state: "healthy", immunity: 0 };
-                    } else if (j > 0 && cells[i][j - 1].state === "infected") {
-                        newCells[i][j] = Math.random() < 0.5 ? { state: "infected", immunity: 4 } : { state: "healthy", immunity: 0 };
-                    } else if (j < size - 1 && cells[i][j + 1].state === "infected") {
-                        newCells[i][j] = Math.random() < 0.5 ? { state: "infected", immunity: 4 } : { state: "healthy", immunity: 0 };
-                    } else {
-                        newCells[i][j] = { state: "healthy", immunity: 0 };
-                    }
-                }
+            row.append(cell);
+        }
+
+        gridContainer.append(row);
+    }
+}
+            function displayGrid(grid) {
+    gridContainer.empty();  // Очистка контейнера перед отображением новой матрицы
+
+    for (let i = 0; i < size; i++) {
+        const row = $("<div></div>");  // Создание нового элемента div для каждой строки
+        row.addClass("row");
+
+        for (let j = 0; j < size; j++) {
+            const cell = $("<div></div>");
+            cell.addClass("cell");
+
+            if (grid[i][j] === "healthy") {
+                cell.addClass("healthy");
+            } else if (grid[i][j] === "infected") {
+                cell.addClass("infected");
+            } else if (grid[i][j] === "immune") {
+                cell.addClass("immune");
             }
+
+            row.append(cell);
         }
-        cells = newCells;
 
-        intervals--;
+        gridContainer.append(row);
     }
-
-    function stopSimulation() {
-        clearInterval(intervalId); // Остановить интервал
-    }
-
-    intervalId = setInterval(updateGrid, 500); // Запуск интервала с обновлением сетки каждые 0.5 секунды
-
 }
 
-    </script>
+            // Перебор всех матриц в результирующих данных
+            for (let i = 0; i < data.grid.length; i++) {
+                setTimeout(function() {
+                    displayGrid(data.grid[i]);
+                }, i * 1500);  // Замена матрицы каждые 0.5 секунды (500 миллисекунд)
+            }
+        });
+    }
+</script>
+
 </body>
 <footer>@ Leftbrained, Inc.</footer>
 </div>

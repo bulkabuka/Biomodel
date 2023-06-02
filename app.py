@@ -2,6 +2,7 @@ from bottle import route, run, template, request, response, static_file, post, g
 import numpy as np
 import json
 import life
+from lichen import simulate_lishai
 
 game_state = None
 
@@ -60,6 +61,24 @@ def next_generation(state):
             elif total == 3:
                 new_state[i,j] = 1
     return new_state
+
+
+@route("/simulate", method="post")
+def simulate():
+    data = request.forms
+    print(data)
+    if data is None or 'rows' not in data or 'cols' not in data or 'intervals' not in data:
+        response.content_type = 'application/json'
+        return json.dumps({'error': 'Invalid request data'})
+
+    rows = int(data['rows'])
+    cols = int(data['cols'])
+    intervals = int(data['intervals'])
+
+    result = simulate_lishai(rows, cols, intervals)
+
+    response.content_type = 'application/json'
+    return result
 
 
 run(host='localhost', port=8080)
