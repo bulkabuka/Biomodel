@@ -1,3 +1,5 @@
+import logging
+import traceback
 from datetime import *
 import os.path
 
@@ -64,23 +66,6 @@ def simulate():
     return result
 
 
-@route('/start_simulation', method='POST')
-def start_simulation():
-    sim = Simulation()
-    sim.setup()
-    sim.run()
-    response.content_type = 'application/json'
-    return sim.matrix.tolist()
-
-
-@route('/update_simulation', method='POST')
-def update_simulation():
-    simulation.run()
-    response.content_type = 'application/json'
-    return simulation.matrix.tolist()
-
-
-
 # интерпретация данных в JSON для анализа на сервере
 @route('/next')
 def next_gen():
@@ -110,10 +95,21 @@ def simulation():
     return simulate_game()
 
 
-@route('/SIM')
-def index():
-    result = simulate_game()  # Выполняем метод simulate_game()
-    return result
+@get('/print_wolf')
+def print_wolf():
+    try:
+        result = simulate_game()  # Execute method simulate_game()
+        print_res = result.grid
+        response.content_type = 'application/json'
+        result_string = ""
+        for row in print_res:
+            result_string += ' '.join(map(str, row))
+            result_string += '\n'
+        return json.dumps({'success': str(result_string)})
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
+        logging.error(traceback.format_exc())
+        return json.dumps({'error': str(e)})
 
 
 run(host='localhost', port=8080)

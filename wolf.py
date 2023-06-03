@@ -48,6 +48,7 @@ class Island:
         for row in self.grid:
             print(' '.join(row))
         print()
+        return self.grid
 
 
 class Animal:
@@ -148,12 +149,9 @@ def simulate_game():
 
     island.print_grid()
 
-
     for _ in range(20):
         island.move()
         island.remove_dead_animals()
         island.print_grid()
         print()
-
-
-simulate_game()
+    return island
