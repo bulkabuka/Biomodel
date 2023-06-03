@@ -45,7 +45,7 @@
                 <p>Кролики: <input id="rabbit-input" type="number" min="0" value="5"></p>
                 <p style="color: gray">Волки: <input id="wolf-input" type="number" min="0" value="10"></p>
                 <p style="color: darksalmon">Волчицы: <input id="female-wolf-input" type="number" min="0" value="7"></p>
-                <button id="start-btn">Начать</button>
+                <button onclick="StartSim()">Начать</button>
                 <div id="grid"></div>
             </div>
         </div>
@@ -53,4 +53,5 @@
 </div>
 <footer>@ Leftbrained, Inc.</footer>
 </div>
+
 </body>

@@ -103,11 +103,17 @@ def save_life():
         file.write(" " + str(datetime.now()))
 
 
-@route('/simulate_game',method="post")
-def simulate_game():
+@route('/simulation',method="post")
+def simulation():
     simulate_game()
 
     return simulate_game()
+
+
+@route('/SIM')
+def index():
+    result = simulate_game()  # Выполняем метод simulate_game()
+    return result
 
 
 run(host='localhost', port=8080)
