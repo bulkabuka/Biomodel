@@ -3,7 +3,10 @@ import numpy as np
 
 # инициализация поля случано выбранными живыми/неживыми клетками
 def start(rows, cols):
-    return np.random.choice([0, 1], size=(rows, cols))
+    if rows > 0 and cols > 0:
+        return np.random.choice([0, 1], size=(rows, cols))
+    else:
+        raise ValueError
 
 
 # метод для генерации следующего поколения, возвращает новую матрицу
