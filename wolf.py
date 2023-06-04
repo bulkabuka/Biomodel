@@ -149,7 +149,7 @@ def simulate_game():
 
     island.print_grid()
 
-    for _ in range(20):
+    for _ in range(1):
         island.move()
         island.remove_dead_animals()
         island.print_grid()
