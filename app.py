@@ -98,14 +98,22 @@ def simulation():
 @get('/print_wolf')
 def print_wolf():
     try:
-        result = simulate_game()  # Execute method simulate_game()
-        print_res = result.grid
-        response.content_type = 'application/json'
+        matrices = []
+        for _ in range(1):
+            result = simulate_game()
+            matrices.append(result.grid)
+
         result_string = ""
-        for row in print_res:
-            result_string += ' '.join(map(str, row))
+        for matrix in matrices:
+            for row in matrix:
+                result_string += ' '.join(map(str, row))
+                result_string += '\n'
             result_string += '\n'
-        return json.dumps({'success': str(result_string)})
+
+        print(result_string)  # Print the result_string to the console
+
+        response.content_type = 'application/json'
+        return json.dumps({'success': result_string})
     except Exception as e:
         logging.error(f"An error occurred: {e}")
         logging.error(traceback.format_exc())

@@ -137,7 +137,7 @@ class SheWolf(Animal):
 
 def simulate_game():
     island = Island(20)
-    for _ in range(10):
+    for _ in range(5):
         x, y = random.randint(0, 19), random.randint(0, 19)
         island.add_rabbit(x, y)
     for _ in range(5):
@@ -149,7 +149,7 @@ def simulate_game():
 
     island.print_grid()
 
-    for _ in range(1):
+    for _ in range(5):
         island.move()
         island.remove_dead_animals()
         island.print_grid()
