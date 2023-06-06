@@ -42,15 +42,22 @@
         <div style="display: flex;">
             <div id="island"></div>
             <div style="margin-left: 20px;">
-                <p>Кролики: <input id="rabbit-input" type="number" min="0" value="5"></p>
-                <p style="color: gray">Волки: <input id="wolf-input" type="number" min="0" value="10"></p>
-                <p style="color: darksalmon">Волчицы: <input id="female-wolf-input" type="number" min="0" value="7"></p>
-                <button id="start-btn">Начать</button>
+                <button onclick="StartSim()">Начать</button>
                 <div id="grid"></div>
             </div>
         </div>
     </div>
 </div>
-<footer>2023 @ Leftbrained, Inc.</footer>
+<footer>@ Leftbrained, Inc.</footer>
 </div>
+
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function StartSim() {
+        $.get('/print_wolf', function(data) {
+            console.log(data);
+            $('#island').text(data['success'].toString());
+        })
+    }
+</script>

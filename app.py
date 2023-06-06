@@ -1,10 +1,12 @@
-from bottle import route, run, template, request, response, static_file, post, get
-import numpy as np
-import json
-import life
+import logging
+import traceback
+from datetime import *
+import os.path
+
+from bottle import route, run, template, request, response, static_file, post, get, abort
 from lichen import simulate_lishai
 from life import *
-from datetime import *
+from wolf import *
 
 game_state = None
 
@@ -76,7 +78,6 @@ def simulate():
     return result
 
 
-
 # интерпретация данных в JSON для анализа на сервере
 @route('/next')
 def next_gen():
@@ -86,6 +87,49 @@ def next_gen():
     return json.dumps({'grid': game_state.tolist()})
 
 
+# сохранение следующей итерации в файл JSON
+@post('/save-life')
+def save_life():
+    global game_state
+    game_state = next_generation(game_state)
+    response.content_type = 'application/json'
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+    with open('output.txt', 'a') as file:
+        json.dump({'grid': game_state.tolist()}, file)
+        file.write(" " + str(datetime.now()))
+
+
+@route('/simulation',method="post")
+def simulation():
+    simulate_game()
+
+    return simulate_game()
+
+
+@get('/print_wolf')
+def print_wolf():
+    try:
+        matrices = []
+        for _ in range(1):
+            result = simulate_game()
+            matrices.append(result.grid)
+
+        result_string = ""
+        for matrix in matrices:
+            for row in matrix:
+                result_string += ' '.join(map(str, row))
+                result_string += '\n'
+            result_string += '\n'
+
+        print(result_string)  # Print the result_string to the console
+
+        response.content_type = 'application/json'
+        return json.dumps({'success': result_string})
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
+        logging.error(traceback.format_exc())
+        return json.dumps({'error': str(e)})
 
 
 run(host='localhost', port=8080)

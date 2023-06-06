@@ -265,7 +265,7 @@ button:hover {
 
 #island {
     width: 800px;
-    height: 800px;
+    height: fit-content;
     background-color: lightgreen;
     display: flex;
     flex-wrap: wrap;
@@ -296,4 +296,17 @@ footer {
     margin: 25px;
     background-color: #3b3b3b;
     color: var(--palette-accent);
+}
+
+.cell-0 {
+    background-color: white;
+}
+.cell-1 {
+    background-color: green;
+}
+.cell-2 {
+    background-color: red;
+}
+.cell-3 {
+    background-color: blue;
 }
