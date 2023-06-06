@@ -4,6 +4,7 @@ import json
 import life
 from lichen import simulate_lishai
 from life import *
+from datetime import *
 
 game_state = None
 
@@ -43,6 +44,14 @@ def start():
     return {'status': 'Game started', 'grid': game_state.tolist()}
 
 
+from datetime import datetime
+import json
+from bottle import request, response, route
+
+
+#запуск симуляции
+
+
 @route("/simulate", method="post")
 def simulate():
     data = request.forms
@@ -54,11 +63,18 @@ def simulate():
     rows = int(data['rows'])
     cols = int(data['cols'])
     intervals = int(data['intervals'])
+    print(intervals)
 
     result = simulate_lishai(rows, cols, intervals)
 
+    with open('last_matrix.json', 'a') as file:
+        file.write(json.dumps(result))
+        now = datetime.now()
+        file.write(str(now) + '\n')
+
     response.content_type = 'application/json'
     return result
+
 
 
 # интерпретация данных в JSON для анализа на сервере
@@ -68,6 +84,8 @@ def next_gen():
     game_state = next_generation(game_state)
     response.content_type = 'application/json'
     return json.dumps({'grid': game_state.tolist()})
+
+
 
 
 run(host='localhost', port=8080)

@@ -1,4 +1,5 @@
 import random
+import json
 
 
 def simulate_lishai(rows, cols, intervals):
@@ -74,3 +75,5 @@ def get_neighbors(row, col, rows, cols):
     if col < cols - 1:
         neighbors.append((row, col + 1))
     return neighbors
+
+

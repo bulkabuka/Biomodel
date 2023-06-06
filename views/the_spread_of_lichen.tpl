@@ -13,6 +13,7 @@
 </head>
     <body>
     <div class="container-main">
+        <!-- Информация о модели -->
         <div class="container" style="margin: 20px;">
             <h1 style="color: var(--palette-accent)">Распространение лишая на кожу</h1>
             <p class="label">
@@ -34,98 +35,28 @@
             </p>
         </div>
     </div>
-    <div class="container" style="margin: 20px;">
-        <h1 style="color: var(--palette-accent)"> Решение модели</h1>
+    <!-- интефейс ввода значений -->
+<div class="container" style="margin: 20px; display: flex;">
+    <div style="flex: 1;">
+        <h1 style="color: var(--palette-accent)">Решение модели</h1>
         <p>Белый - Здоровая клетка</p>
-        <p style="color:#FF8743">Оранжевый - Инфецированная клетка </p>
-        <p style="color:#ADFF00"> Зелёный - Клетка с иммунитетом </p>
+        <p style="color:#FF8743">Оранжевый - Инфицированная клетка</p>
+        <p style="color:#ADFF00">Зелёный - Клетка с иммунитетом</p>
         <label for="size">Размер NxN:</label>
         <input type="number" id="size" min="1" max="10">
         <br>
         <label for="intervals">Количество интервалов времени:</label>
         <input type="number" id="intervals" min="1" max="10">
         <br>
+        <!-- кнопка запуска модели -->
         <button onclick="startSimulation()">Запустить</button>
-        <br><br>
-        <div id="grid"></div>
+        <!-- Кнопка сохранения результата -->
+        <button id="save">Сохранить</button>
     </div>
-
+    <div id="grid"></div>
+</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    function startSimulation() {
-        const size = parseInt($("#size").val());
-        const intervals = parseInt($("#intervals").val());
-
-        $.post("/simulate", { rows: size, cols: size, intervals: intervals }, function(data) {
-            console.log(data);
-            if (!data || !data.grid || data.grid.length === 0) {
-                console.error("Invalid data format");
-                return;
-            }
-
-            const gridContainer = $("#grid");
-
-            // Функция для отображения текущей матрицы
-           function displayGrid(grid) {
-    gridContainer.empty();  // Очистка контейнера перед отображением новой матрицы
-
-    for (let i = 0; i < size; i++) {
-        const row = $("<div></div>");  // Создание нового элемента div для каждой строки
-        row.addClass("row");
-
-        for (let j = 0; j < size; j++) {
-            const cell = $("<div></div>");
-            cell.addClass("cell");
-
-            if (grid[i][j] === "healthy") {
-                cell.addClass("healthy");
-            } else if (grid[i][j] === "infected") {
-                cell.addClass("infected");
-            } else if (grid[i][j] === "immune") {
-                cell.addClass("immune");
-            }
-
-            row.append(cell);
-        }
-
-        gridContainer.append(row);
-    }
-}
-            function displayGrid(grid) {
-    gridContainer.empty();  // Очистка контейнера перед отображением новой матрицы
-
-    for (let i = 0; i < size; i++) {
-        const row = $("<div></div>");  // Создание нового элемента div для каждой строки
-        row.addClass("row");
-
-        for (let j = 0; j < size; j++) {
-            const cell = $("<div></div>");
-            cell.addClass("cell");
-
-            if (grid[i][j] === "healthy") {
-                cell.addClass("healthy");
-            } else if (grid[i][j] === "infected") {
-                cell.addClass("infected");
-            } else if (grid[i][j] === "immune") {
-                cell.addClass("immune");
-            }
-
-            row.append(cell);
-        }
-
-        gridContainer.append(row);
-    }
-}
-
-            // Перебор всех матриц в результирующих данных
-            for (let i = 0; i < data.grid.length; i++) {
-                setTimeout(function() {
-                    displayGrid(data.grid[i]);
-                }, i * 1500);  // Замена матрицы каждые 0.5 секунды (500 миллисекунд)
-            }
-        });
-    }
-</script>
+<script src="/static/js/lichen.js"> </script>
 
 </body>
 <footer>@ Leftbrained, Inc.</footer>
